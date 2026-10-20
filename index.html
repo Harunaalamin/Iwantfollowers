@@ -28,6 +28,10 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
 
 .app-container { max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; position: relative; padding-bottom: 80px; box-shadow: 0 0 30px rgba(0,0,0,0.08); }
 
+/* LOADING SCREEN (Sabon Abu) */
+#app-loader { position: fixed; inset: 0; background: var(--bg-light); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+.loader-spinner { width: 40px; height: 40px; border: 4px solid var(--border); border-top-color: var(--primary-orange); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+
 /* Topbar */
 .topbar { background: var(--primary-orange); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3); }
 .logo-text { font-size: 15px; font-weight: 800; color: var(--primary-blue); display: flex; align-items: center; gap: 8px; cursor: pointer; }
@@ -59,8 +63,6 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
 .input-group { margin-bottom: 15px; text-align: left; }
 .input-group input { width: 100%; padding: 15px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 15px; outline: none; transition: 0.3s; background: var(--white); }
 .input-group input:focus { border-color: var(--primary-orange); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1); }
-.checkbox-group { display: flex; justify-content: space-between; align-items: center; font-size: 13px; margin-bottom: 20px; }
-.checkbox-group a { color: var(--primary-orange); font-weight: 600; }
 .btn-primary { background: var(--primary-orange); color: var(--white); border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; }
 .btn-primary:active { transform: scale(0.98); background: var(--primary-orange-hover); }
 .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
@@ -110,6 +112,12 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
 </head>
 <body>
 
+<!-- LOADING SCREEN -->
+<div id="app-loader">
+    <div class="loader-spinner"></div>
+    <h3 style="color: var(--primary-blue); font-size: 16px;">Please wait...</h3>
+</div>
+
 <div class="app-container">
     
     <!-- TOPBAR -->
@@ -127,7 +135,7 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
     <div id="view-auth" class="view">
         <div class="auth-container">
             <h2>Welcome To I Want Followers</h2>
-            <p>Enter your details to sign in to your account</p>
+            <p>Sign in to start growing</p>
             
             <button class="btn-google" onclick="googleLogin(this)">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" alt="G"> Sign in with Google
@@ -136,7 +144,7 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
             <div class="divider"><span>Or continue with</span></div>
 
             <div class="input-group">
-                <input type="email" id="login-email" placeholder="Username or Email">
+                <input type="email" id="login-email" placeholder="Email">
             </div>
             <div class="input-group">
                 <input type="password" id="login-pass" placeholder="Password">
@@ -146,6 +154,7 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
                 <span>Log In</span>
                 <div class="spinner"></div>
             </button>
+            <p style="margin-top: 15px; font-size: 13px;">Don't have an account? <a style="color: var(--primary-orange); font-weight: 600;" onclick="showToast('Use Google Sign In to create an account')">Create one</a></p>
         </div>
     </div>
 
@@ -154,7 +163,7 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
         <div class="hero-section">
             <h4>I WANT FOLLOWERS</h4>
             <h1>We Will Help You To Grow Your Social Media</h1>
-            <p>Social Media Marketing (SMM) is a powerful tool for businesses and individuals to promote their products or services.</p>
+            <p>Social Media Marketing is a powerful tool for businesses and individuals to promote their products.</p>
             <a class="btn-site" onclick="switchView('order')">Start Ordering Now</a>
         </div>
     </div>
@@ -246,14 +255,14 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
     </div>
 
     <!-- MENU VIEW -->
-    <div id="view-menu" class="view menu-view">
-        <div class="menu-logo">
+    <div id="view-menu" class="view menu-view" style="background: var(--primary-orange); min-height: calc(100vh - 60px); color: var(--white); padding: 30px 20px; text-align: center;">
+        <div style="font-size: 20px; font-weight: 800; margin-bottom: 40px; display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--primary-blue); background: var(--white); padding: 15px; border-radius: 16px;">
             <i class="fa-solid fa-layer-group"></i> I WANT FOLLOWERS
         </div>
-        <div class="menu-item" onclick="switchView('home')"><i class="fa-solid fa-house"></i> DASHBOARD</div>
-        <div class="menu-item" onclick="switchView('order')"><i class="fa-solid fa-cart-shopping"></i> NEW ORDER</div>
-        <div class="menu-item" onclick="switchView('deposit')"><i class="fa-solid fa-wallet"></i> DEPOSIT</div>
-        <div class="menu-item" onclick="switchView('history')"><i class="fa-solid fa-clock-rotate-left"></i> HISTORY</div>
+        <div class="menu-item" onclick="switchView('home')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.1);"><i class="fa-solid fa-house"></i> DASHBOARD</div>
+        <div class="menu-item" onclick="switchView('order')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.1);"><i class="fa-solid fa-cart-shopping"></i> NEW ORDER</div>
+        <div class="menu-item" onclick="switchView('deposit')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.1);"><i class="fa-solid fa-wallet"></i> DEPOSIT</div>
+        <div class="menu-item" onclick="switchView('history')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.1);"><i class="fa-solid fa-clock-rotate-left"></i> HISTORY</div>
     </div>
 
     <!-- BOTTOM NAVIGATION -->
@@ -295,21 +304,11 @@ let auth, db, currentUser = null;
 let userBalance = 0;
 
 const servicesDB = {
-  facebook: [
-    { id: "fb_flw", name: "Facebook Followers", japId: "1636", ratePer1000: 2500, min: 100 }
-  ],
-  instagram: [
-    { id: "ig_flw", name: "Instagram Followers", japId: "5903", ratePer1000: 3500, min: 100 }
-  ],
-  tiktok: [
-    { id: "tt_flw", name: "TikTok Followers", japId: "10338", ratePer1000: 4000, min: 10 }
-  ],
-  youtube: [
-    { id: "yt_sub", name: "YouTube Subscribers", japId: "9187", ratePer1000: 5000, min: 50 }
-  ],
-  twitter: [
-    { id: "tw_flw", name: "Twitter Followers", japId: "7724", ratePer1000: 4500, min: 100 }
-  ]
+  facebook: [ { id: "fb_flw", name: "Facebook Followers", japId: "1636", ratePer1000: 2500, min: 100 } ],
+  instagram: [ { id: "ig_flw", name: "Instagram Followers", japId: "5903", ratePer1000: 3500, min: 100 } ],
+  tiktok: [ { id: "tt_flw", name: "TikTok Followers", japId: "10338", ratePer1000: 4000, min: 10 } ],
+  youtube: [ { id: "yt_sub", name: "YouTube Subscribers", japId: "9187", ratePer1000: 5000, min: 50 } ],
+  twitter: [ { id: "tw_flw", name: "Twitter Followers", japId: "7724", ratePer1000: 4500, min: 100 } ]
 };
 
 let selectedNetwork = 'facebook';
@@ -317,14 +316,27 @@ let selectedService = servicesDB.facebook[0];
 let currentPrice = 0;
 let currentQty = 0;
 
-// 2. INITIALIZATION
+// 2. INITIALIZATION & AUTH FIX
 try {
   firebase.initializeApp(firebaseConfig);
   auth = firebase.auth();
   db = firebase.firestore();
 } catch(e) { console.error("Firebase init failed", e); }
 
+// Karbar sakamakon Google Login idan ya dawo
+auth.getRedirectResult().then((result) => {
+    if (result.user) {
+        showToast('Logged in successfully!', 'success');
+    }
+}).catch((error) => {
+    if(error.code !== 'auth/no-auth-event') showToast(error.message, 'error');
+});
+
+// Sa ranar (Listen) ga wanda ya shiga
 auth.onAuthStateChanged(user => {
+  // Rufe Loading Screen din da zarar an gama dubawa
+  document.getElementById('app-loader').style.display = 'none';
+
   if (user) {
     currentUser = user;
     document.getElementById('profile-name').value = user.displayName || 'User';
@@ -336,23 +348,17 @@ auth.onAuthStateChanged(user => {
             userBalance = doc.data().balance || 0;
             document.getElementById('top-balance').textContent = '₦' + userBalance.toLocaleString(undefined, {minimumFractionDigits: 2});
         } else {
-            // Idan sabon mai amfani ne, kirkiro masa wallet
             db.collection('users').doc(user.uid).set({ balance: 0, email: user.email });
         }
     });
 
-    if(document.getElementById('view-auth').classList.contains('active')){
-        switchView('home');
-    }
+    // Tura shi Dashboard idan ya shiga
+    switchView('home');
   } else {
     currentUser = null;
     switchView('auth');
   }
 });
-
-auth.getRedirectResult().then((result) => {
-    if (result.user) showToast('Logged in successfully!', 'success');
-}).catch((error) => showToast(error.message, 'error'));
 
 function googleLogin(btn) {
   setLoading(btn, true);
@@ -430,15 +436,13 @@ function initDeposit(btn) {
     const handler = PaystackPop.setup({
         key: PAYSTACK_KEY,
         email: currentUser.email,
-        amount: amount * 100, // Kobo
+        amount: amount * 100,
         currency: 'NGN',
         ref: 'DEP_' + Date.now() + Math.floor(Math.random()*1000),
         callback: function(response) {
-            // Bayan an biya, saka kudin cikin wallet
             db.collection('users').doc(currentUser.uid).update({
                 balance: firebase.firestore.FieldValue.increment(amount)
             }).then(() => {
-                // Ajiye a history
                 db.collection('transactions').add({
                     userId: currentUser.uid,
                     type: 'Deposit',
@@ -512,7 +516,6 @@ async function placeOrder(btn) {
   if (!isConfirmed) { showToast('Please confirm your order details', 'error'); return; }
   if (currentPrice <= 0) { showToast('Price calculation error', 'error'); return; }
 
-  // DUBAR WALLET
   if (userBalance < currentPrice) {
       showToast('Insufficient Balance! Please deposit.', 'error');
       switchView('deposit');
@@ -522,12 +525,10 @@ async function placeOrder(btn) {
   setLoading(btn, true);
 
   try {
-    // Cire kudin daga Wallet
     await db.collection('users').doc(currentUser.uid).update({
         balance: firebase.firestore.FieldValue.increment(-currentPrice)
     });
 
-    // Ajiye Order
     const orderData = {
         userId: currentUser.uid,
         userEmail: currentUser.email,
@@ -541,7 +542,6 @@ async function placeOrder(btn) {
     };
     await db.collection('orders').add(orderData);
 
-    // Ajiye a History
     await db.collection('transactions').add({
         userId: currentUser.uid,
         type: 'Order',
@@ -550,7 +550,6 @@ async function placeOrder(btn) {
         date: new Date().toISOString()
     });
     
-    // Tura wa JAP API
     const formData = new URLSearchParams();
     formData.append('key', "56328e7270ccd578f4fcf6ba08c672e3"); 
     formData.append('action', 'add');
@@ -594,8 +593,6 @@ async function loadHistory() {
             
         let transactions = [];
         snap.forEach(doc => transactions.push(doc.data()));
-        
-        // Tsara su daga sabo zuwa tsoho
         transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         if (transactions.length === 0) {
