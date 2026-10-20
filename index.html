@@ -22,89 +22,69 @@
   --success: #10b981;
   --danger: #ef4444;
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
-
 .app-container { max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; position: relative; padding-bottom: 80px; box-shadow: 0 0 30px rgba(0,0,0,0.08); }
 
-/* LOADING SCREEN (Sabon Abu) */
+/* LOADING SCREEN */
 #app-loader { position: fixed; inset: 0; background: var(--bg-light); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
 .loader-spinner { width: 40px; height: 40px; border: 4px solid var(--border); border-top-color: var(--primary-orange); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* Topbar */
-.topbar { background: var(--primary-orange); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3); }
+.topbar { background: var(--primary-orange); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
 .logo-text { font-size: 15px; font-weight: 800; color: var(--primary-blue); display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .logo-text i { color: #8b5cf6; font-size: 20px; }
 .top-icons { display: flex; gap: 15px; color: var(--white); font-size: 18px; align-items: center; }
-.balance-badge { font-size: 13px; font-weight: 800; background: var(--primary-blue); color: var(--white); padding: 6px 12px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+.balance-badge { font-size: 13px; font-weight: 800; background: var(--primary-blue); color: var(--white); padding: 6px 12px; border-radius: 20px; }
 
-/* Bottom Nav */
-.bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: var(--white); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid var(--border); z-index: 100; padding-bottom: env(safe-area-inset-bottom, 12px); }
-.nav-item { color: var(--text-gray); font-size: 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; }
-.nav-item span { font-size: 10px; font-weight: 600; }
+.bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: var(--white); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid var(--border); z-index: 100; }
+.nav-item { color: var(--text-gray); font-size: 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .nav-item.active { color: var(--primary-orange); }
 .nav-item.center-btn { background: var(--primary-orange); color: var(--white); width: 55px; height: 55px; border-radius: 50%; display: grid; place-items: center; font-size: 24px; margin-top: -30px; box-shadow: 0 6px 15px rgba(245, 158, 11, 0.4); border: 4px solid var(--white); }
 
-/* Views */
 .view { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
 .view.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Auth Screen */
 .auth-container { background: linear-gradient(145deg, #eef2ff, #ffffff); border-radius: 24px; padding: 30px 20px; text-align: center; margin-top: 10px; border: 1px solid var(--border); }
 .auth-container h2 { font-size: 22px; margin-bottom: 8px; color: var(--primary-blue); }
 .auth-container p { color: var(--text-gray); font-size: 14px; margin-bottom: 25px; }
-.btn-google { background: var(--primary-blue); color: var(--white); border: none; width: 100%; padding: 14px; border-radius: 12px; font-weight: 600; font-size: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px; cursor: pointer; transition: 0.3s; }
-.btn-google:active { transform: scale(0.98); }
+.btn-google { background: var(--primary-blue); color: var(--white); border: none; width: 100%; padding: 14px; border-radius: 12px; font-weight: 600; font-size: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px; cursor: pointer; }
 .divider { display: flex; align-items: center; color: var(--text-gray); font-size: 12px; margin: 20px 0; }
 .divider::before, .divider::after { content: ""; flex: 1; border-bottom: 1px solid var(--border); }
 .divider span { padding: 0 10px; }
 .input-group { margin-bottom: 15px; text-align: left; }
-.input-group input { width: 100%; padding: 15px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 15px; outline: none; transition: 0.3s; background: var(--white); }
-.input-group input:focus { border-color: var(--primary-orange); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1); }
-.btn-primary { background: var(--primary-orange); color: var(--white); border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; }
-.btn-primary:active { transform: scale(0.98); background: var(--primary-orange-hover); }
-.btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+.input-group input { width: 100%; padding: 15px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 15px; outline: none; }
+.btn-primary { background: var(--primary-orange); color: var(--white); border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; }
+.spinner { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s linear infinite; display: none; }
 
-/* Loading Spinner */
-.spinner { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; display: none; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* Home */
 .hero-section { text-align: center; padding: 30px 10px; }
 .hero-section h4 { color: var(--primary-orange); font-size: 13px; letter-spacing: 3px; margin-bottom: 15px; font-weight: 800; }
 .hero-section h1 { font-size: 30px; line-height: 1.2; margin-bottom: 15px; font-weight: 800; color: var(--primary-blue); }
 .hero-section p { color: var(--text-gray); font-size: 14px; margin-bottom: 25px; line-height: 1.6; }
-.btn-site { background: var(--primary-orange); color: var(--white); padding: 14px 40px; border-radius: 12px; font-weight: 700; font-size: 15px; display: inline-block; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); cursor: pointer;}
+.btn-site { background: var(--primary-orange); color: var(--white); padding: 14px 40px; border-radius: 12px; font-weight: 700; font-size: 15px; display: inline-block; margin-bottom: 30px; cursor: pointer;}
 
-/* Cards & Forms */
-.card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+.card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
 .card-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; color: var(--primary-blue); }
-.social-icons { display: flex; gap: 12px; justify-content: space-between; margin-bottom: 5px; overflow-x: auto; padding-bottom: 5px; }
-.social-icon { min-width: 48px; height: 48px; border-radius: 50%; background: var(--bg-light); display: grid; place-items: center; font-size: 20px; color: var(--text-gray); cursor: pointer; transition: 0.3s; border: 2px solid transparent; }
-.social-icon.active { background: #fff7ed; color: var(--primary-orange); border-color: var(--primary-orange); transform: scale(1.05); }
+.social-icons { display: flex; gap: 12px; justify-content: space-between; margin-bottom: 5px; overflow-x: auto; }
+.social-icon { min-width: 48px; height: 48px; border-radius: 50%; background: var(--bg-light); display: grid; place-items: center; font-size: 20px; color: var(--text-gray); cursor: pointer; border: 2px solid transparent; }
+.social-icon.active { background: #fff7ed; color: var(--primary-orange); border-color: var(--primary-orange); }
 .form-group { margin-bottom: 15px; }
 .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--text-dark); }
-.form-group select, .form-group input { width: 100%; padding: 15px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 15px; background: var(--bg-light); outline: none; transition: 0.3s; color: var(--text-dark); }
-.form-group select:focus, .form-group input:focus { border-color: var(--primary-orange); background: var(--white); }
+.form-group select, .form-group input { width: 100%; padding: 15px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 15px; background: var(--bg-light); outline: none; }
 .price-box { display: flex; align-items: center; background: var(--bg-light); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; }
 .price-box input { border: none; background: transparent; border-radius: 0; font-weight: 700; font-size: 18px; color: var(--primary-blue); }
-.price-box .currency-label { padding: 15px 20px; background: var(--border); font-weight: 700; font-size: 14px; color: var(--text-dark); }
+.price-box .currency-label { padding: 15px 20px; background: var(--border); font-weight: 700; font-size: 14px; }
 .confirm-check { display: flex; align-items: center; gap: 10px; font-size: 14px; margin: 20px 0; color: var(--text-gray); }
-.confirm-check input { width: 20px; height: 20px; accent-color: var(--primary-orange); }
 
-/* History List */
 .history-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid var(--border); }
-.history-item:last-child { border-bottom: none; }
-.history-info h4 { font-size: 15px; font-weight: 700; color: var(--primary-blue); margin-bottom: 4px; }
+.history-info h4 { font-size: 15px; font-weight: 700; color: var(--primary-blue); }
 .history-info small { font-size: 12px; color: var(--text-gray); }
 .history-amount { font-weight: 800; font-size: 15px; }
 .history-amount.credit { color: var(--success); }
 .history-amount.debit { color: var(--danger); }
 
-/* Toast */
-.toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px); background: var(--text-dark); color: var(--white); padding: 12px 24px; border-radius: 12px; font-size: 14px; z-index: 2000; opacity: 0; transition: 0.3s; pointer-events: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 90%; max-width: 350px; text-align: center; font-weight: 600; }
+.toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px); background: var(--text-dark); color: var(--white); padding: 12px 24px; border-radius: 12px; font-size: 14px; z-index: 2000; opacity: 0; transition: 0.3s; pointer-events: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 90%; max-width: 350px; text-align: center; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .toast.error { background: var(--danger); }
 .toast.success { background: var(--success); }
@@ -120,7 +100,6 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
 
 <div class="app-container">
     
-    <!-- TOPBAR -->
     <header class="topbar">
         <div class="logo-text" onclick="switchView('home')">
             <i class="fa-solid fa-layer-group"></i> I WANT FOLLOWERS
@@ -131,7 +110,6 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
         </div>
     </header>
 
-    <!-- AUTH VIEW -->
     <div id="view-auth" class="view">
         <div class="auth-container">
             <h2>Welcome To I Want Followers</h2>
@@ -154,11 +132,9 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
                 <span>Log In</span>
                 <div class="spinner"></div>
             </button>
-            <p style="margin-top: 15px; font-size: 13px;">Don't have an account? <a style="color: var(--primary-orange); font-weight: 600;" onclick="showToast('Use Google Sign In to create an account')">Create one</a></p>
         </div>
     </div>
 
-    <!-- HOME VIEW -->
     <div id="view-home" class="view active">
         <div class="hero-section">
             <h4>I WANT FOLLOWERS</h4>
@@ -168,7 +144,6 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
         </div>
     </div>
 
-    <!-- ORDER VIEW -->
     <div id="view-order" class="view">
         <div class="card">
             <div class="card-title">Choose A Social Network</div>
@@ -180,7 +155,6 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
                 <div class="social-icon" onclick="selectNetwork('twitter', this)"><i class="fa-brands fa-x-twitter"></i></div>
             </div>
         </div>
-
         <div class="card">
             <div class="form-group">
                 <label>Service Category</label>
@@ -212,17 +186,13 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
         </div>
     </div>
 
-    <!-- DEPOSIT VIEW -->
     <div id="view-deposit" class="view">
         <div class="card">
             <div class="card-title">Deposit Funds</div>
-            <p style="font-size: 14px; color: var(--text-gray); margin-bottom: 20px;">Enter the amount you want to add to your wallet.</p>
-            
             <div class="form-group">
                 <label>Amount (NGN)</label>
                 <input type="number" id="deposit-amount" placeholder="e.g. 5000" min="500">
             </div>
-            
             <button class="btn-primary" id="deposit-btn" onclick="initDeposit(this)">
                 <span>Deposit via Paystack</span>
                 <div class="spinner"></div>
@@ -230,7 +200,6 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
         </div>
     </div>
 
-    <!-- HISTORY VIEW -->
     <div id="view-history" class="view">
         <h2 style="margin-bottom: 20px; color: var(--primary-blue);">Transaction History</h2>
         <div class="card" id="history-list" style="padding: 0;">
@@ -238,7 +207,6 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
         </div>
     </div>
 
-    <!-- PROFILE VIEW -->
     <div id="view-profile" class="view">
         <h2 style="margin-bottom: 20px; color: var(--primary-blue);">Profile</h2>
         <div class="card">
@@ -254,18 +222,16 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
         </div>
     </div>
 
-    <!-- MENU VIEW -->
-    <div id="view-menu" class="view menu-view" style="background: var(--primary-orange); min-height: calc(100vh - 60px); color: var(--white); padding: 30px 20px; text-align: center;">
-        <div style="font-size: 20px; font-weight: 800; margin-bottom: 40px; display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--primary-blue); background: var(--white); padding: 15px; border-radius: 16px;">
+    <div id="view-menu" class="view" style="background: var(--primary-orange); min-height: calc(100vh - 60px); padding: 30px 20px; text-align: center;">
+        <div style="font-size: 20px; font-weight: 800; margin-bottom: 40px; color: var(--primary-blue); background: var(--white); padding: 15px; border-radius: 16px;">
             <i class="fa-solid fa-layer-group"></i> I WANT FOLLOWERS
         </div>
-        <div class="menu-item" onclick="switchView('home')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.1);"><i class="fa-solid fa-house"></i> DASHBOARD</div>
-        <div class="menu-item" onclick="switchView('order')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.1);"><i class="fa-solid fa-cart-shopping"></i> NEW ORDER</div>
-        <div class="menu-item" onclick="switchView('deposit')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.1);"><i class="fa-solid fa-wallet"></i> DEPOSIT</div>
-        <div class="menu-item" onclick="switchView('history')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.1);"><i class="fa-solid fa-clock-rotate-left"></i> HISTORY</div>
+        <div class="menu-item" onclick="switchView('home')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px;">DASHBOARD</div>
+        <div class="menu-item" onclick="switchView('order')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px;">NEW ORDER</div>
+        <div class="menu-item" onclick="switchView('deposit')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px;">DEPOSIT</div>
+        <div class="menu-item" onclick="switchView('history')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px;">HISTORY</div>
     </div>
 
-    <!-- BOTTOM NAVIGATION -->
     <nav class="bottom-nav">
         <div class="nav-item" id="nav-menu" onclick="switchView('menu')"><i class="fa-solid fa-list-ul"></i></div>
         <div class="nav-item" id="nav-order" onclick="switchView('order')"><i class="fa-regular fa-credit-card"></i></div>
@@ -273,22 +239,18 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
         <div class="nav-item" id="nav-history" onclick="switchView('history')"><i class="fa-solid fa-clock-rotate-left"></i></div>
         <div class="nav-item" id="nav-profile" onclick="switchView('profile')"><i class="fa-regular fa-user"></i></div>
     </nav>
-
 </div>
 
 <div class="toast" id="toast">Success</div>
 
-<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<!-- Paystack -->
 <script src="https://js.paystack.co/v1/inline.js"></script>
 
 <script>
 'use strict';
 
-// 1. CONFIGURATION
 const firebaseConfig = {
   apiKey: "AIzaSyCX94nrlD1OzODszUOsl6c83Fd9PvN8KnE",
   authDomain: "iwantfollowers-7674c.firebaseapp.com",
@@ -299,7 +261,6 @@ const firebaseConfig = {
 };
 
 const PAYSTACK_KEY = "pk_test_abf6fedd61c621a1ddf13799be1efb23818d6ed2";
-
 let auth, db, currentUser = null;
 let userBalance = 0;
 
@@ -316,54 +277,58 @@ let selectedService = servicesDB.facebook[0];
 let currentPrice = 0;
 let currentQty = 0;
 
-// 2. INITIALIZATION & AUTH FIX
-try {
-  firebase.initializeApp(firebaseConfig);
-  auth = firebase.auth();
-  db = firebase.firestore();
-} catch(e) { console.error("Firebase init failed", e); }
+firebase.initializeApp(firebaseConfig);
+auth = firebase.auth();
+db = firebase.firestore();
 
-// Karbar sakamakon Google Login idan ya dawo
-auth.getRedirectResult().then((result) => {
-    if (result.user) {
+// 1. TILASTA FIREBASE YA ADANA BAYANAI A WAYA
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  .then(() => {
+    // 2. DUBE SAKAMAKON LOGIN IDAN YA DAWO DAGA GOOGLE
+    auth.getRedirectResult().then((result) => {
+      if (result.user) {
         showToast('Logged in successfully!', 'success');
-    }
-}).catch((error) => {
-    if(error.code !== 'auth/no-auth-event') showToast(error.message, 'error');
-});
-
-// Sa ranar (Listen) ga wanda ya shiga
-auth.onAuthStateChanged(user => {
-  // Rufe Loading Screen din da zarar an gama dubawa
-  document.getElementById('app-loader').style.display = 'none';
-
-  if (user) {
-    currentUser = user;
-    document.getElementById('profile-name').value = user.displayName || 'User';
-    document.getElementById('profile-email').value = user.email;
-    
-    // Fara sauraron Balance daga Database
-    db.collection('users').doc(user.uid).onSnapshot(doc => {
-        if (doc.exists) {
-            userBalance = doc.data().balance || 0;
-            document.getElementById('top-balance').textContent = '₦' + userBalance.toLocaleString(undefined, {minimumFractionDigits: 2});
-        } else {
-            db.collection('users').doc(user.uid).set({ balance: 0, email: user.email });
-        }
+      }
+    }).catch((error) => {
+      // Idan akwai matsala, zai nuna maka a fili
+      if (error.code !== 'auth/no-auth-event') {
+        alert("Login Error: " + error.message + "\n\nLura: Kada ka yi login a cikin WhatsApp/Facebook. Kwafa link din ka saka a Chrome.");
+      }
     });
 
-    // Tura shi Dashboard idan ya shiga
-    switchView('home');
-  } else {
-    currentUser = null;
-    switchView('auth');
-  }
-});
+    // 3. SAURARON WANDA YA SHIGA
+    auth.onAuthStateChanged(user => {
+      document.getElementById('app-loader').style.display = 'none';
+
+      if (user) {
+        currentUser = user;
+        document.getElementById('profile-name').value = user.displayName || 'User';
+        document.getElementById('profile-email').value = user.email;
+        
+        db.collection('users').doc(user.uid).onSnapshot(doc => {
+            if (doc.exists) {
+                userBalance = doc.data().balance || 0;
+                document.getElementById('top-balance').textContent = '₦' + userBalance.toLocaleString(undefined, {minimumFractionDigits: 2});
+            } else {
+                db.collection('users').doc(user.uid).set({ balance: 0, email: user.email });
+            }
+        });
+
+        switchView('home');
+      } else {
+        currentUser = null;
+        switchView('auth');
+      }
+    });
+  });
 
 function googleLogin(btn) {
   setLoading(btn, true);
   const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithRedirect(provider);
+  auth.signInWithRedirect(provider).catch(err => {
+      alert(err.message);
+      setLoading(btn, false);
+  });
 }
 
 function emailLogin(btn) {
@@ -374,7 +339,7 @@ function emailLogin(btn) {
   setLoading(btn, true);
   auth.signInWithEmailAndPassword(email, pass)
     .then(() => showToast('Welcome back!', 'success'))
-    .catch((error) => showToast(error.message.replace('Firebase: ', ''), 'error'))
+    .catch((error) => showToast(error.message, 'error'))
     .finally(() => setLoading(btn, false));
 }
 
@@ -385,7 +350,6 @@ function logout() {
   });
 }
 
-// 3. UI LOGIC
 function switchView(viewId) {
   if (!currentUser && viewId !== 'auth' && viewId !== 'home') {
     showToast('Please log in first!', 'error');
@@ -398,228 +362,4 @@ function switchView(viewId) {
   const target = document.getElementById('view-' + viewId);
   if (target) target.classList.add('active');
 
-  const navItem = document.getElementById('nav-' + viewId);
-  if (navItem) navItem.classList.add('active');
-  
-  if (viewId === 'history') loadHistory();
-  window.scrollTo(0,0);
-}
-
-function showToast(msg, type = '') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show ' + type;
-  setTimeout(() => t.classList.remove('show'), 4000);
-}
-
-function setLoading(btn, isLoading) {
-  const spinner = btn.querySelector('.spinner');
-  const text = btn.querySelector('span');
-  if (isLoading) {
-    btn.disabled = true;
-    if (spinner) spinner.style.display = 'block';
-    if (text) text.style.opacity = '0.5';
-  } else {
-    btn.disabled = false;
-    if (spinner) spinner.style.display = 'none';
-    if (text) text.style.opacity = '1';
-  }
-}
-
-// 4. DEPOSIT LOGIC
-function initDeposit(btn) {
-    const amount = parseFloat(document.getElementById('deposit-amount').value);
-    if (!amount || amount < 500) { showToast('Minimum deposit is ₦500', 'error'); return; }
-
-    setLoading(btn, true);
-
-    const handler = PaystackPop.setup({
-        key: PAYSTACK_KEY,
-        email: currentUser.email,
-        amount: amount * 100,
-        currency: 'NGN',
-        ref: 'DEP_' + Date.now() + Math.floor(Math.random()*1000),
-        callback: function(response) {
-            db.collection('users').doc(currentUser.uid).update({
-                balance: firebase.firestore.FieldValue.increment(amount)
-            }).then(() => {
-                db.collection('transactions').add({
-                    userId: currentUser.uid,
-                    type: 'Deposit',
-                    amount: amount,
-                    reference: response.reference,
-                    date: new Date().toISOString()
-                });
-                showToast(`₦${amount} Deposited Successfully!`, 'success');
-                document.getElementById('deposit-amount').value = '';
-                switchView('home');
-            });
-        },
-        onClose: function() {
-            setLoading(btn, false);
-            showToast('Deposit cancelled.', 'error');
-        }
-    });
-    handler.openIframe();
-}
-
-// 5. ORDER LOGIC
-function selectNetwork(network, el) {
-  selectedNetwork = network;
-  document.querySelectorAll('.social-icon').forEach(icon => icon.classList.remove('active'));
-  el.classList.add('active');
-  
-  const serviceSelect = document.getElementById('order-service');
-  serviceSelect.innerHTML = '';
-  servicesDB[network].forEach(service => {
-    const option = document.createElement('option');
-    option.value = service.id;
-    option.textContent = service.name;
-    serviceSelect.appendChild(option);
-  });
-  updateMinQty();
-}
-
-function updateMinQty() {
-  const serviceId = document.getElementById('order-service').value;
-  selectedService = servicesDB[selectedNetwork].find(s => s.id === serviceId);
-  if(!selectedService) return;
-
-  document.getElementById('min-qty-label').textContent = selectedService.min;
-  document.getElementById('order-qty').value = ''; 
-  document.getElementById('order-qty').min = selectedService.min;
-  calculatePrice();
-}
-
-function calculatePrice() {
-  const qty = parseInt(document.getElementById('order-qty').value) || 0;
-  currentQty = qty;
-  
-  if (qty < selectedService.min && qty > 0) {
-    document.getElementById('order-price').value = "Below Min";
-    currentPrice = 0;
-    return;
-  }
-  
-  currentPrice = Math.ceil((selectedService.ratePer1000 / 1000) * qty);
-  document.getElementById('order-price').value = currentPrice > 0 ? currentPrice.toFixed(2) : "0.00";
-}
-
-async function placeOrder(btn) {
-  if (!currentUser) { switchView('auth'); return; }
-  
-  const link = document.getElementById('order-link').value;
-  const isConfirmed = document.getElementById('confirm-order').checked;
-
-  if (!link) { showToast('Please enter your profile link', 'error'); return; }
-  if (currentQty < selectedService.min) { showToast(`Minimum quantity is ${selectedService.min}`, 'error'); return; }
-  if (!isConfirmed) { showToast('Please confirm your order details', 'error'); return; }
-  if (currentPrice <= 0) { showToast('Price calculation error', 'error'); return; }
-
-  if (userBalance < currentPrice) {
-      showToast('Insufficient Balance! Please deposit.', 'error');
-      switchView('deposit');
-      return;
-  }
-
-  setLoading(btn, true);
-
-  try {
-    await db.collection('users').doc(currentUser.uid).update({
-        balance: firebase.firestore.FieldValue.increment(-currentPrice)
-    });
-
-    const orderData = {
-        userId: currentUser.uid,
-        userEmail: currentUser.email,
-        service: selectedService.name,
-        platform: selectedNetwork,
-        quantity: currentQty,
-        price: currentPrice,
-        link: link,
-        status: 'Processing',
-        createdAt: new Date().toISOString()
-    };
-    await db.collection('orders').add(orderData);
-
-    await db.collection('transactions').add({
-        userId: currentUser.uid,
-        type: 'Order',
-        description: `${currentQty} ${selectedService.name}`,
-        amount: currentPrice,
-        date: new Date().toISOString()
-    });
-    
-    const formData = new URLSearchParams();
-    formData.append('key', "56328e7270ccd578f4fcf6ba08c672e3"); 
-    formData.append('action', 'add');
-    formData.append('service', selectedService.japId);
-    formData.append('link', link);
-    formData.append('quantity', currentQty);
-
-    const res = await fetch("https://justanotherpanel.com/api/v2", {
-      method: 'POST',
-      body: formData.toString()
-    });
-    const data = await res.json();
-
-    if (data.order) {
-      showToast('✅ Order placed & Delivery started!', 'success');
-      document.getElementById('order-link').value = '';
-      document.getElementById('order-qty').value = '';
-      document.getElementById('confirm-order').checked = false;
-      calculatePrice();
-      switchView('home');
-    } else {
-      showToast('Order saved, but API returned an error.', 'error');
-    }
-  } catch(e) {
-    console.error(e);
-    showToast('An error occurred processing your order.', 'error');
-  } finally {
-    setLoading(btn, false);
-  }
-}
-
-// 6. HISTORY LOGIC
-async function loadHistory() {
-    const list = document.getElementById('history-list');
-    list.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-gray);">Loading history...</p>';
-    
-    try {
-        const snap = await db.collection('transactions')
-            .where('userId', '==', currentUser.uid)
-            .get();
-            
-        let transactions = [];
-        snap.forEach(doc => transactions.push(doc.data()));
-        transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        if (transactions.length === 0) {
-            list.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-gray);">No transactions yet.</p>';
-            return;
-        }
-
-        list.innerHTML = transactions.map(t => `
-            <div class="history-item">
-                <div class="history-info">
-                    <h4>${t.type === 'Deposit' ? 'Wallet Deposit' : t.description}</h4>
-                    <small>${new Date(t.date).toLocaleString()}</small>
-                </div>
-                <div class="history-amount ${t.type === 'Deposit' ? 'credit' : 'debit'}">
-                    ${t.type === 'Deposit' ? '+' : '-'} ₦${t.amount.toLocaleString()}
-                </div>
-            </div>
-        `).join('');
-    } catch(e) {
-        console.error(e);
-        list.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--danger);">Error loading history.</p>';
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    updateMinQty();
-});
-</script>
-</body>
-</html>
+  const navItem = document.getElementById('nav-' +
