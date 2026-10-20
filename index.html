@@ -26,12 +26,11 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
 
-/* App Container */
 .app-container { max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; position: relative; padding-bottom: 80px; box-shadow: 0 0 30px rgba(0,0,0,0.08); }
 
 /* Topbar */
 .topbar { background: var(--primary-orange); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3); }
-.logo-text { font-size: 16px; font-weight: 800; color: var(--primary-blue); display: flex; align-items: center; gap: 8px; }
+.logo-text { font-size: 16px; font-weight: 800; color: var(--primary-blue); display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .logo-text i { color: #8b5cf6; font-size: 20px; }
 .top-icons { display: flex; gap: 15px; color: var(--white); font-size: 18px; align-items: center; }
 .top-icons .currency { font-size: 13px; font-weight: 700; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 6px; }
@@ -75,7 +74,7 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
 .hero-section h4 { color: var(--primary-orange); font-size: 13px; letter-spacing: 3px; margin-bottom: 15px; font-weight: 800; }
 .hero-section h1 { font-size: 30px; line-height: 1.2; margin-bottom: 15px; font-weight: 800; color: var(--primary-blue); }
 .hero-section p { color: var(--text-gray); font-size: 14px; margin-bottom: 25px; line-height: 1.6; }
-.btn-site { background: var(--primary-orange); color: var(--white); padding: 14px 40px; border-radius: 12px; font-weight: 700; font-size: 15px; display: inline-block; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
+.btn-site { background: var(--primary-orange); color: var(--white); padding: 14px 40px; border-radius: 12px; font-weight: 700; font-size: 15px; display: inline-block; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); cursor: pointer;}
 
 /* Order Form */
 .card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
@@ -313,9 +312,7 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
 <script>
 'use strict';
 
-/* ============================================================
-   1. CONFIGURATION
-   ============================================================ */
+// 1. CONFIGURATION
 const firebaseConfig = {
   apiKey: "AIzaSyCX94nrlD1OzODszUOsl6c83Fd9PvN8KnE",
   authDomain: "iwantfollowers-7674c.firebaseapp.com",
@@ -331,7 +328,6 @@ const ADMIN_EMAIL = "alaminharuna29@gmail.com";
 
 let auth, db, currentUser = null;
 
-// Database of Services
 const servicesDB = {
   facebook: [
     { id: "fb_flw", name: "Facebook Followers [Profile]", japId: "1636", ratePer1000: 2500, min: 100 },
@@ -358,9 +354,7 @@ let selectedService = servicesDB.facebook[0];
 let currentPrice = 0;
 let currentQty = 0;
 
-/* ============================================================
-   2. INITIALIZATION & AUTH
-   ============================================================ */
+// 2. INITIALIZATION & AUTH
 try {
   firebase.initializeApp(firebaseConfig);
   auth = firebase.auth();
@@ -372,6 +366,8 @@ auth.onAuthStateChanged(user => {
     currentUser = user;
     document.getElementById('profile-name').value = user.displayName || 'User';
     document.getElementById('profile-email').value = user.email;
+    
+    // Idan yana kan shafin login, tura shi home
     if(document.getElementById('view-auth').classList.contains('active')){
         switchView('home');
     }
@@ -381,13 +377,19 @@ auth.onAuthStateChanged(user => {
   }
 });
 
+// Karbar sakamakon Google Redirect
+auth.getRedirectResult().then((result) => {
+    if (result.user) {
+        showToast('Logged in successfully!', 'success');
+    }
+}).catch((error) => {
+    showToast(error.message, 'error');
+});
+
 function googleLogin(btn) {
   setLoading(btn, true);
   const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider)
-    .then(() => showToast('Logged in successfully!', 'success'))
-    .catch((error) => showToast(error.message, 'error'))
-    .finally(() => setLoading(btn, false));
+  auth.signInWithRedirect(provider);
 }
 
 function emailLogin(btn) {
@@ -410,9 +412,7 @@ function logout() {
   });
 }
 
-/* ============================================================
-   3. UI LOGIC & NAVIGATION
-   ============================================================ */
+// 3. UI LOGIC & NAVIGATION
 function switchView(viewId) {
   if (!currentUser && viewId !== 'auth' && viewId !== 'home') {
     showToast('Please log in first!', 'error');
@@ -435,7 +435,7 @@ function showToast(msg, type = '') {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.className = 'toast show ' + type;
-  setTimeout(() => t.classList.remove('show'), 3000);
+  setTimeout(() => t.classList.remove('show'), 4000);
 }
 
 function setLoading(btn, isLoading) {
@@ -452,15 +452,12 @@ function setLoading(btn, isLoading) {
   }
 }
 
-/* ============================================================
-   4. ORDER FORM LOGIC
-   ============================================================ */
+// 4. ORDER FORM LOGIC
 function selectNetwork(network, el) {
   selectedNetwork = network;
   document.querySelectorAll('.social-icon').forEach(icon => icon.classList.remove('active'));
   el.classList.add('active');
   
-  // Update Service Dropdown
   const serviceSelect = document.getElementById('order-service');
   serviceSelect.innerHTML = '';
   servicesDB[network].forEach(service => {
@@ -477,8 +474,10 @@ function updateMinQty() {
   const serviceId = document.getElementById('order-service').value;
   selectedService = servicesDB[selectedNetwork].find(s => s.id === serviceId);
   
+  if(!selectedService) return;
+
   document.getElementById('min-qty-label').textContent = selectedService.min;
-  document.getElementById('order-qty').value = ''; // Reset quantity
+  document.getElementById('order-qty').value = ''; 
   document.getElementById('order-qty').min = selectedService.min;
   calculatePrice();
 }
@@ -506,8 +505,8 @@ function placeOrder(btn) {
   if (!link) { showToast('Please enter your profile link', 'error'); return; }
   if (currentQty < selectedService.min) { showToast(`Minimum quantity is ${selectedService.min}`, 'error'); return; }
   if (!isConfirmed) { showToast('Please confirm your order details', 'error'); return; }
+  if (currentPrice <= 0) { showToast('Price calculation error', 'error'); return; }
 
-  // Show Payment Modal
   document.getElementById('modal-price').textContent = '₦' + currentPrice.toLocaleString();
   document.getElementById('paystack-modal').classList.add('active');
 }
@@ -516,9 +515,7 @@ function closeModal() {
   document.getElementById('paystack-modal').classList.remove('active');
 }
 
-/* ============================================================
-   5. PAYSTACK PAYMENT & API CALL
-   ============================================================ */
+// 5. PAYSTACK PAYMENT & API CALL
 function payWithPaystack(btn) {
   const link = document.getElementById('order-link').value;
   const ref = 'IWF_' + Math.floor(Math.random() * 1000000000) + Date.now();
@@ -527,7 +524,7 @@ function payWithPaystack(btn) {
 
   const handler = PaystackPop.setup({
     key: PAYSTACK_KEY,
-    email: currentUser.email,
+    email: currentUser.email || 'test@test.com',
     amount: currentPrice * 100, // Kobo
     currency: 'NGN',
     ref: ref,
@@ -560,10 +557,11 @@ async function processOrder(ref, link, btn) {
   };
 
   try {
-    // 1. Save to Firebase for Admin tracking
+    // Ajiye a Firebase
     await db.collection('orders').add(orderData);
+    showToast('Order saved to Database!', 'success');
     
-    // 2. Send to SMM Panel (JAP API)
+    // Tura wa JAP API (Kada ka manta da canza Service ID)
     const formData = new URLSearchParams();
     formData.append('key', "56328e7270ccd578f4fcf6ba08c672e3"); 
     formData.append('action', 'add');
@@ -581,18 +579,17 @@ async function processOrder(ref, link, btn) {
 
     if (data.order) {
       showToast('✅ Order placed! Delivery started.', 'success');
-      // Reset form
       document.getElementById('order-link').value = '';
       document.getElementById('order-qty').value = '';
       document.getElementById('confirm-order').checked = false;
       calculatePrice();
       switchView('home');
     } else {
-      showToast('Order saved, but API returned an error. Admin will fix it.', 'error');
+      showToast('Order saved, but API returned an error. Check Service ID.', 'error');
     }
   } catch(e) {
     console.error(e);
-    showToast('Order saved. Admin will process it manually.', 'error');
+    showToast('Order saved. But error sending to Server.', 'error');
   } finally {
     setLoading(btn, false);
   }
