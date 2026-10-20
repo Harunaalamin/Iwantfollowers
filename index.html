@@ -26,11 +26,6 @@
 body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
 .app-container { max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; position: relative; padding-bottom: 80px; box-shadow: 0 0 30px rgba(0,0,0,0.08); }
 
-/* LOADING SCREEN */
-#app-loader { position: fixed; inset: 0; background: var(--bg-light); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: 0.3s; }
-.loader-spinner { width: 40px; height: 40px; border: 4px solid var(--border); border-top-color: var(--primary-orange); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
 .topbar { background: var(--primary-orange); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
 .logo-text { font-size: 15px; font-weight: 800; color: var(--primary-blue); display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .logo-text i { color: #8b5cf6; font-size: 20px; }
@@ -57,6 +52,7 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
 .input-group input { width: 100%; padding: 15px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 15px; outline: none; }
 .btn-primary { background: var(--primary-orange); color: var(--white); border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; }
 .spinner { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s linear infinite; display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .hero-section { text-align: center; padding: 30px 10px; }
 .hero-section h4 { color: var(--primary-orange); font-size: 13px; letter-spacing: 3px; margin-bottom: 15px; font-weight: 800; }
@@ -92,12 +88,6 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
 </head>
 <body>
 
-<!-- LOADING SCREEN -->
-<div id="app-loader">
-    <div class="loader-spinner"></div>
-    <h3 style="color: var(--primary-blue); font-size: 16px;">Please wait...</h3>
-</div>
-
 <div class="app-container">
     
     <header class="topbar">
@@ -110,7 +100,8 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
         </div>
     </header>
 
-    <div id="view-auth" class="view">
+    <!-- AUTH VIEW (Zai fara budewa anan) -->
+    <div id="view-auth" class="view active">
         <div class="auth-container">
             <h2>Welcome To I Want Followers</h2>
             <p>Sign in to start growing</p>
@@ -135,7 +126,7 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
         </div>
     </div>
 
-    <div id="view-home" class="view active">
+    <div id="view-home" class="view">
         <div class="hero-section">
             <h4>I WANT FOLLOWERS</h4>
             <h1>We Will Help You To Grow Your Social Media</h1>
@@ -226,10 +217,10 @@ body { background: var(--bg-light); color: var(--text-dark); overflow-x: hidden;
         <div style="font-size: 20px; font-weight: 800; margin-bottom: 40px; color: var(--primary-blue); background: var(--white); padding: 15px; border-radius: 16px;">
             <i class="fa-solid fa-layer-group"></i> I WANT FOLLOWERS
         </div>
-        <div class="menu-item" onclick="switchView('home')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px;">DASHBOARD</div>
-        <div class="menu-item" onclick="switchView('order')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px;">NEW ORDER</div>
-        <div class="menu-item" onclick="switchView('deposit')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px;">DEPOSIT</div>
-        <div class="menu-item" onclick="switchView('history')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px;">HISTORY</div>
+        <div class="menu-item" onclick="switchView('home')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px; cursor:pointer;">DASHBOARD</div>
+        <div class="menu-item" onclick="switchView('order')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px; cursor:pointer;">NEW ORDER</div>
+        <div class="menu-item" onclick="switchView('deposit')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px; cursor:pointer;">DEPOSIT</div>
+        <div class="menu-item" onclick="switchView('history')" style="font-size: 16px; font-weight: 600; margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px; cursor:pointer;">HISTORY</div>
     </div>
 
     <nav class="bottom-nav">
@@ -277,66 +268,43 @@ let selectedService = servicesDB.facebook[0];
 let currentPrice = 0;
 let currentQty = 0;
 
-// 1. INITIALIZATION
 try {
     firebase.initializeApp(firebaseConfig);
     auth = firebase.auth();
     db = firebase.firestore();
+
+    // Saurari wanda ya shiga
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            currentUser = user;
+            document.getElementById('profile-name').value = user.displayName || 'User';
+            document.getElementById('profile-email').value = user.email;
+            
+            db.collection('users').doc(user.uid).onSnapshot(doc => {
+                if (doc.exists) {
+                    userBalance = doc.data().balance || 0;
+                    document.getElementById('top-balance').textContent = '₦' + userBalance.toLocaleString(undefined, {minimumFractionDigits: 2});
+                } else {
+                    db.collection('users').doc(user.uid).set({ balance: 0, email: user.email });
+                }
+            });
+
+            switchView('home'); // Idan ya shiga, tura shi Home
+        } else {
+            currentUser = null;
+            switchView('auth'); // Idan bai shiga ba, tura shi Login
+        }
+    });
+
+    auth.getRedirectResult().then((result) => {
+        if (result.user) showToast('Logged in successfully!', 'success');
+    }).catch((error) => {
+        if (error.code !== 'auth/no-auth-event') alert("Login Error: " + error.message);
+    });
+
 } catch(e) {
-    document.getElementById('app-loader').style.display = 'none';
     alert("Firebase Initialization Error: " + e.message);
 }
-
-// 2. FIX: Loader Timeout (Idan Firebase ya dauki lokaci mai tsawo, ya nuna Login)
-setTimeout(() => {
-    const loader = document.getElementById('app-loader');
-    if (loader && loader.style.display !== 'none') {
-        loader.style.display = 'none';
-        document.getElementById('view-auth').classList.add('active');
-    }
-}, 6000); // Jira seconds 6
-
-// 3. AUTH STATE LISTENER
-auth.onAuthStateChanged(user => {
-    document.getElementById('app-loader').style.display = 'none'; // Rufe loading screen
-
-    if (user) {
-        currentUser = user;
-        document.getElementById('profile-name').value = user.displayName || 'User';
-        document.getElementById('profile-email').value = user.email;
-        
-        // Saurari Balance
-        db.collection('users').doc(user.uid).onSnapshot(doc => {
-            if (doc.exists) {
-                userBalance = doc.data().balance || 0;
-                document.getElementById('top-balance').textContent = '₦' + userBalance.toLocaleString(undefined, {minimumFractionDigits: 2});
-            } else {
-                db.collection('users').doc(user.uid).set({ balance: 0, email: user.email });
-            }
-        }, error => {
-            console.log("Firestore listener error: ", error);
-        });
-
-        switchView('home');
-    } else {
-        currentUser = null;
-        switchView('auth');
-    }
-}, error => {
-    document.getElementById('app-loader').style.display = 'none';
-    alert("Auth Error: " + error.message);
-});
-
-// 4. REDIRECT RESULT
-auth.getRedirectResult().then((result) => {
-    if (result.user) {
-        showToast('Logged in successfully!', 'success');
-    }
-}).catch((error) => {
-    if (error.code !== 'auth/no-auth-event') {
-        alert("Login Error: " + error.message + "\n\nTabbatar kana amfani da Chrome ba WhatsApp ba.");
-    }
-});
 
 function googleLogin(btn) {
   setLoading(btn, true);
@@ -401,197 +369,3 @@ function setLoading(btn, isLoading) {
     if (text) text.style.opacity = '0.5';
   } else {
     btn.disabled = false;
-    if (spinner) spinner.style.display = 'none';
-    if (text) text.style.opacity = '1';
-  }
-}
-
-function initDeposit(btn) {
-    const amount = parseFloat(document.getElementById('deposit-amount').value);
-    if (!amount || amount < 500) { showToast('Minimum deposit is ₦500', 'error'); return; }
-
-    setLoading(btn, true);
-    const handler = PaystackPop.setup({
-        key: PAYSTACK_KEY,
-        email: currentUser.email,
-        amount: amount * 100,
-        currency: 'NGN',
-        ref: 'DEP_' + Date.now() + Math.floor(Math.random()*1000),
-        callback: function(response) {
-            db.collection('users').doc(currentUser.uid).update({
-                balance: firebase.firestore.FieldValue.increment(amount)
-            }).then(() => {
-                db.collection('transactions').add({
-                    userId: currentUser.uid,
-                    type: 'Deposit',
-                    amount: amount,
-                    reference: response.reference,
-                    date: new Date().toISOString()
-                });
-                showToast(`₦${amount} Deposited Successfully!`, 'success');
-                document.getElementById('deposit-amount').value = '';
-                switchView('home');
-            });
-        },
-        onClose: function() {
-            setLoading(btn, false);
-            showToast('Deposit cancelled.', 'error');
-        }
-    });
-    handler.openIframe();
-}
-
-function selectNetwork(network, el) {
-  selectedNetwork = network;
-  document.querySelectorAll('.social-icon').forEach(icon => icon.classList.remove('active'));
-  el.classList.add('active');
-  
-  const serviceSelect = document.getElementById('order-service');
-  serviceSelect.innerHTML = '';
-  servicesDB[network].forEach(service => {
-    const option = document.createElement('option');
-    option.value = service.id;
-    option.textContent = service.name;
-    serviceSelect.appendChild(option);
-  });
-  updateMinQty();
-}
-
-function updateMinQty() {
-  const serviceId = document.getElementById('order-service').value;
-  selectedService = servicesDB[selectedNetwork].find(s => s.id === serviceId);
-  if(!selectedService) return;
-
-  document.getElementById('min-qty-label').textContent = selectedService.min;
-  document.getElementById('order-qty').value = ''; 
-  document.getElementById('order-qty').min = selectedService.min;
-  calculatePrice();
-}
-
-function calculatePrice() {
-  const qty = parseInt(document.getElementById('order-qty').value) || 0;
-  currentQty = qty;
-  
-  if (qty < selectedService.min && qty > 0) {
-    document.getElementById('order-price').value = "Below Min";
-    currentPrice = 0;
-    return;
-  }
-  
-  currentPrice = Math.ceil((selectedService.ratePer1000 / 1000) * qty);
-  document.getElementById('order-price').value = currentPrice > 0 ? currentPrice.toFixed(2) : "0.00";
-}
-
-async function placeOrder(btn) {
-  if (!currentUser) { switchView('auth'); return; }
-  
-  const link = document.getElementById('order-link').value;
-  const isConfirmed = document.getElementById('confirm-order').checked;
-
-  if (!link) { showToast('Please enter your profile link', 'error'); return; }
-  if (currentQty < selectedService.min) { showToast(`Minimum quantity is ${selectedService.min}`, 'error'); return; }
-  if (!isConfirmed) { showToast('Please confirm your order details', 'error'); return; }
-  if (currentPrice <= 0) { showToast('Price calculation error', 'error'); return; }
-
-  if (userBalance < currentPrice) {
-      showToast('Insufficient Balance! Please deposit.', 'error');
-      switchView('deposit');
-      return;
-  }
-
-  setLoading(btn, true);
-
-  try {
-    await db.collection('users').doc(currentUser.uid).update({
-        balance: firebase.firestore.FieldValue.increment(-currentPrice)
-    });
-
-    await db.collection('orders').add({
-        userId: currentUser.uid,
-        userEmail: currentUser.email,
-        service: selectedService.name,
-        platform: selectedNetwork,
-        quantity: currentQty,
-        price: currentPrice,
-        link: link,
-        status: 'Processing',
-        createdAt: new Date().toISOString()
-    });
-
-    await db.collection('transactions').add({
-        userId: currentUser.uid,
-        type: 'Order',
-        description: `${currentQty} ${selectedService.name}`,
-        amount: currentPrice,
-        date: new Date().toISOString()
-    });
-    
-    const formData = new URLSearchParams();
-    formData.append('key', "56328e7270ccd578f4fcf6ba08c672e3"); 
-    formData.append('action', 'add');
-    formData.append('service', selectedService.japId);
-    formData.append('link', link);
-    formData.append('quantity', currentQty);
-
-    const res = await fetch("https://justanotherpanel.com/api/v2", {
-      method: 'POST',
-      body: formData.toString()
-    });
-    const data = await res.json();
-
-    if (data.order) {
-      showToast('✅ Order placed & Delivery started!', 'success');
-      document.getElementById('order-link').value = '';
-      document.getElementById('order-qty').value = '';
-      document.getElementById('confirm-order').checked = false;
-      calculatePrice();
-      switchView('home');
-    } else {
-      showToast('Order saved, but API returned an error.', 'error');
-    }
-  } catch(e) {
-    console.error(e);
-    showToast('An error occurred processing your order.', 'error');
-  } finally {
-    setLoading(btn, false);
-  }
-}
-
-async function loadHistory() {
-    const list = document.getElementById('history-list');
-    list.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-gray);">Loading history...</p>';
-    
-    try {
-        const snap = await db.collection('transactions').where('userId', '==', currentUser.uid).get();
-        let transactions = [];
-        snap.forEach(doc => transactions.push(doc.data()));
-        transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        if (transactions.length === 0) {
-            list.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-gray);">No transactions yet.</p>';
-            return;
-        }
-
-        list.innerHTML = transactions.map(t => `
-            <div class="history-item">
-                <div class="history-info">
-                    <h4>${t.type === 'Deposit' ? 'Wallet Deposit' : t.description}</h4>
-                    <small>${new Date(t.date).toLocaleString()}</small>
-                </div>
-                <div class="history-amount ${t.type === 'Deposit' ? 'credit' : 'debit'}">
-                    ${t.type === 'Deposit' ? '+' : '-'} ₦${t.amount.toLocaleString()}
-                </div>
-            </div>
-        `).join('');
-    } catch(e) {
-        console.error(e);
-        list.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--danger);">Error loading history.</p>';
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    updateMinQty();
-});
-</script>
-</body>
-</html>
